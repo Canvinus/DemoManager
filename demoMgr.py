@@ -1,24 +1,43 @@
 import json
 import os
 from datetime import datetime
+
 from urllib.request import urlopen, Request
 
+import requests
 from pyunpack import Archive
 
 from shutil import copyfile
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 parent_dir = "../DemoManager"
 temp_dir = os.path.join(parent_dir, "temp")
 
-
 class Data:
-    def __init__(self, demo, date, id, team1, team2, maps):
-        self.demo = demo
-        self.date = date
+    def __init__(self, id, date, demo, maps, team1, team2):
+        self.maps = []
         self.id = id
+        self.date = date
+        self.demo = "https://hltv.org" + demo
         self.team1 = team1
         self.team2 = team2
-        self.maps = maps
+        for map in maps:
+            if(map == "ovp"):
+                self.maps.append("Overpass")
+            elif (map == "nuke"):
+                self.maps.append("Nuke")
+            elif (map == "inf"):
+                self.maps.append("Inferno")
+            elif (map == "mrg"):
+                self.maps.append("Mirage")
+            elif (map == "vertigo"):
+                self.maps.append("Vertigo")
+            elif (map == "trn"):
+                self.maps.append("Train")
+            elif (map == "d2"):
+                self.maps.append("Dust2")
 
 
 def download(url):
@@ -45,7 +64,7 @@ def unarchive(filename):
 
 
 def buildHierarchy(dt: Data):
-    date_path = os.path.join(parent_dir, str(datetime.fromtimestamp(int(dt.date)).strftime("%d %m %Y")))
+    date_path = os.path.join(parent_dir, str(datetime.fromtimestamp(int(dt.date)/1000).strftime("%d %m %Y")))
 
     if not os.path.exists(date_path):
         os.mkdir(date_path)
@@ -85,13 +104,15 @@ def main():
     if not os.path.exists("temp"):
         os.mkdir("temp")
 
-    with open("data.json", "r") as read_file:
-        data_dict = json.load(read_file)
+    data_dict = requests.get("http://localhost:8000/api/matchesRecent").json()
 
     count = 1
     for dt in data_dict:
         print("Processing match " + str(count) + " out of " + str(len(data_dict)))
-        buildHierarchy(Data(**dt))
+        maps = []
+        for map in dt["maps"]:
+            maps.append(map["map"])
+        buildHierarchy(Data(int(dt["id"]), dt["date"], dt["demo"], maps, dt["team1"]["name"], dt["team2"]["name"]))
         count += 1
 
 
