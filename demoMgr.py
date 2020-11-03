@@ -5,7 +5,8 @@ from datetime import datetime
 from urllib.request import urlopen, Request
 
 import requests
-from pyunpack import Archive
+
+import patoolib
 
 from shutil import copyfile
 
@@ -58,7 +59,7 @@ def download(url):
 
 
 def unarchive(filename):
-    Archive(filename).extractall(temp_dir)
+    patoolib.extract_archive(archive=filename, outdir=temp_dir, program="/usr/local/Cellar/p7zip/16.02_2/lib/p7zip/7z")
     os.remove(filename)
     print("Demos were unarchived!")
 
@@ -114,7 +115,6 @@ def main():
             maps.append(map["map"])
         buildHierarchy(Data(int(dt["id"]), dt["date"], dt["demo"], maps, dt["team1"]["name"], dt["team2"]["name"]))
         count += 1
-
 
 if __name__ == "__main__":
     main()
