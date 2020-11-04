@@ -59,13 +59,13 @@ def download(url):
 
 
 def unarchive(filename):
-    patoolib.extract_archive(archive=filename, outdir=temp_dir, program="/usr/local/Cellar/p7zip/16.02_2/lib/p7zip/7z")
+    os.system('7z e ' + filename + " -otemp")
     os.remove(filename)
     print("Demos were unarchived!")
 
 
 def buildHierarchy(dt: Data):
-    date_path = os.path.join(parent_dir, str(datetime.fromtimestamp(int(dt.date)/1000).strftime("%d %m %Y")))
+    date_path = os.path.join(parent_dir, str(datetime.fromtimestamp(int(dt.date)/1000).strftime("%d-%m-%Y")))
 
     if not os.path.exists(date_path):
         os.mkdir(date_path)
@@ -115,6 +115,7 @@ def main():
             maps.append(map["map"])
         buildHierarchy(Data(int(dt["id"]), dt["date"], dt["demo"], maps, dt["team1"]["name"], dt["team2"]["name"]))
         count += 1
+
 
 if __name__ == "__main__":
     main()
