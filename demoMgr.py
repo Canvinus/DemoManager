@@ -59,7 +59,10 @@ def download(url):
 
 
 def unarchive(filename):
-    patoolib.extract_archive(archive=filename, outdir=temp_dir, program="/usr/local/Cellar/p7zip/16.02_2/lib/p7zip/7z")
+    try:
+        patoolib.extract_archive(archive=filename, outdir=temp_dir, program="/bin/7z")
+    except:
+        pass
     os.remove(filename)
     print("Demos were unarchived!")
 
@@ -105,7 +108,7 @@ def main():
     if not os.path.exists("temp"):
         os.mkdir("temp")
 
-    data_dict = requests.get("http://localhost:8000/api/matchesRecent").json()
+    data_dict = requests.get("http://localhost:8000/api/team/Astralis").json()
 
     count = 1
     for dt in data_dict:
