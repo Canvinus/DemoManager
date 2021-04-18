@@ -1,0 +1,28 @@
+[
+  {
+    "demo": "https://www.hltv.org/download/demo/60755",
+    "date": "1603561200",
+    "id": "2344730",
+    "team1": "Astralis",
+    "team2": "Heroic",
+    "maps": ["Nuke", "Inferno" , "Vertigo"]
+  },
+
+  {
+    "demo": "https://www.hltv.org/download/demo/60739",
+    "date": "1603476000",
+    "id": "2344729",
+    "team1": "Astralis",
+    "team2": "Vitality",
+    "maps": ["Nuke", "Dust2" , "Overpass"]
+  },
+
+  {
+    "demo": "https://www.hltv.org/download/demo/60657",
+    "date": "1603278000",
+    "id": "2344718",
+    "team1": "Astralis",
+    "team2": "Fnatic",
+    "maps": ["Inferno", "Dust2" , "Overpass"]
+  }
+]
